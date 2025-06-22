@@ -71,7 +71,7 @@ async function sort() {
     case "quick": await quickSort(0, array.length - 1); setComplexity("O(n log n)"); break;
   }
 
-  // Mark all bars green if not already
+  // Final pass to mark everything as sorted
   array.forEach((_, i) => sortedSet.add(i));
   updateDisplay();
   document.getElementById("comparisons").textContent = comparisons;
@@ -81,7 +81,7 @@ function setComplexity(text) {
   document.getElementById("complexity").textContent = text;
 }
 
-// -------- Sorting Algorithms --------
+// ------------ SORTING ALGORITHMS ------------ //
 
 async function bubbleSort() {
   let n = array.length;
@@ -140,11 +140,14 @@ async function insertionSort() {
       await sleep(delay);
     }
     array[j + 1] = key;
-    sortedSet.add(j + 1);
+
+    // Mark sorted prefix
+    for (let k = 0; k <= i; k++) {
+      sortedSet.add(k);
+    }
     updateDisplay();
     await sleep(delay);
   }
-  array.forEach((_, i) => sortedSet.add(i));
 }
 
 async function countingSort() {
@@ -235,53 +238,70 @@ async function mergeSort(left, right) {
   await merge(left, mid, right);
 }
 
+async function mergeSort(left, right) {
+  if (left >= right) return;
+  let mid = Math.floor((left + right) / 2);
+  await mergeSort(left, mid);
+  await mergeSort(mid + 1, right);
+  await merge(left, mid, right);
+
+  // ✅ Only mark green when doing final top-level merge
+  if (left === 0 && right === array.length - 1) {
+    for (let i = 0; i < array.length; i++) {
+      sortedSet.add(i);
+      updateDisplay();
+      await sleep(20);
+    }
+  }
+}
+
 async function merge(left, mid, right) {
-  let leftArr = array.slice(left, mid + 1);
-  let rightArr = array.slice(mid + 1, right + 1);
+  const leftArr = array.slice(left, mid + 1);
+  const rightArr = array.slice(mid + 1, right + 1);
   let i = 0, j = 0, k = left;
 
   while (i < leftArr.length && j < rightArr.length) {
     comparisons++;
-    await visualize(k, k, "compare");
+    
+    // 🟣 Purple compare
+    const highlight = {};
+    highlight[k] = "#800080"; // purple
+    updateDisplay(highlight);
+    await sleep(delay);
 
     if (leftArr[i] <= rightArr[j]) {
-      array[k] = leftArr[i++];
+      array[k++] = leftArr[i++];
     } else {
-      array[k] = rightArr[j++];
+      array[k++] = rightArr[j++];
     }
 
-    sortedSet.add(k);
-    updateDisplay();
+    updateDisplay(); // remove highlight
     await sleep(delay);
-    k++;
   }
 
   while (i < leftArr.length) {
-    array[k] = leftArr[i++];
-    sortedSet.add(k);
+    array[k++] = leftArr[i++];
     updateDisplay();
     await sleep(delay);
-    k++;
   }
 
   while (j < rightArr.length) {
-    array[k] = rightArr[j++];
-    sortedSet.add(k);
+    array[k++] = rightArr[j++];
     updateDisplay();
     await sleep(delay);
-    k++;
   }
 }
+
 
 async function quickSort(low, high) {
   if (low < high) {
     const pi = await partition(low, high);
-    sortedSet.add(pi);
+    sortedSet.add(pi); // ✅ Mark pivot as sorted
     updateDisplay();
     await quickSort(low, pi - 1);
     await quickSort(pi + 1, high);
   } else if (low === high) {
-    sortedSet.add(low);
+    sortedSet.add(low); // ✅ Single sorted element
     updateDisplay();
   }
 }
