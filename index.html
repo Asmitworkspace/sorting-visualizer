@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sorting Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <h1>🔢 Sorting Visualizer</h1>
+
+  <div class="controls">
+    <label>Algorithm:</label>
+    <select id="algorithm">
+      <option value="bubble">Bubble Sort</option>
+      <option value="selection">Selection Sort</option>
+      <option value="insertion">Insertion Sort</option>
+      <option value="counting">Counting Sort</option>
+      <option value="radix">Radix Sort</option>
+      <option value="bucket">Bucket Sort</option>
+      <option value="merge">Merge Sort</option>
+      <option value="quick">Quick Sort</option>
+    </select>
+
+    <label>Array Size:</label>
+    <input type="range" id="size" min="10" max="100" value="30" />
+
+    <label>Speed of Algorithm:</label>
+    <input type="range" id="speed" min="1" max="100" value="50" />
+
+    <button onclick="generateArray()">🎲 Generate</button>
+    <button onclick="sort()">🚀 Sort</button>
+  </div>
+
+  <div class="info">
+    <p><strong>Time Complexity:</strong> <span id="complexity">-</span></p>
+    <p><strong>Comparisons:</strong> <span id="comparisons">0</span></p>
+  </div>
+
+  <div id="array-container"></div>
+
+  <!-- ✅ Footer with name + social links -->
+  <footer style="margin-top: 30px; font-family: 'Poppins', sans-serif;">
+    <p>Made with ❤️ by <strong>Asmit Prabhakar</strong></p>
+    <div style="font-size: 24px;">
+      <a href="https://www.linkedin.com/in/asmit-prabhakar-11a86128a" target="_blank" style="margin: 0 10px;">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" width="30" height="30">
+      </a>
+      <a href="https://github.com/Asmitworkspace" target="_blank" style="margin: 0 10px;">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="30" height="30">
+      </a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
